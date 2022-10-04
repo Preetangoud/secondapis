@@ -8,7 +8,7 @@ let port = process.env.PORT || 9870;
 let mongo = require('mongodb')
 let MongoCLient = mongo.MongoClient
  // let mongoUrl = process.env.MongoUrl
- let mongoUrl = process.env.MongoLiveUrl
+ let mongoUrl = process.env.MongoUrl;
 let db;
 
 // middleware (supporting library)
@@ -49,23 +49,25 @@ app.get('/menu', (req, res) => {
         res.send(result)
     })
 })
-app.get('/restaurants', (req, res) => {
-    let stateId = Number(req.query.stateId) 
+
+
+app.get('/restaurants',(req,res) => {
+    let stateId = Number(req.query.stateId)
     let mealId = Number(req.query.mealId)
-    let query = {};
-    if (stateId && mealId){
-        query = {state_id:stateId,'mealTypes.mealtype_id':mealId }
+    let query = {}
+    if(stateId && mealId){
+      query = {state_id:stateId,'mealTypes.mealtype_id':mealId}
     }
-    else if (stateId){
-        query = {state_id: stateId}
-    }else if (mealId){
-        query = {'mealTypes.mealtype_id':mealId}
+    else if(stateId){
+      query = {state_id:stateId}
+    }else if(mealId){
+      query = {'mealTypes.mealtype_id':mealId}
     }
     db.collection('restaurants').find(query).toArray((err,result) => {
-        if (err) throw err
-        res.send(result)
+      if(err) throw err;
+      res.send(result)
     })
-})
+  })
 
 app.get('/filter/:mealId', (req,res) => {
     let sort = {cost:1}
@@ -155,7 +157,6 @@ app.get('/details/:id', (req,res) => {
   })
 
   app.post('/placeOrder',(req,res) => {
-    console.log(req.body)
     db.collection('orders').insert(req.body,(err,result) => {
       if(err) throw err;
       res.send(result)
@@ -165,7 +166,7 @@ app.get('/details/:id', (req,res) => {
   app.put('/updateOrder/:id',(req,res) => {
     let oid = Number(req.params.id);
     db.collection('orders').updateOne(
-      {_id:oid},
+      {"orderId": oid},
       {
         $set:{
           "status":req.body.status,
