@@ -9,7 +9,7 @@ let mongo = require('mongodb')
 let MongoCLient = mongo.MongoClient
  // let mongoUrl = process.env.MongoUrl
  let mongoUrl = process.env.MongoUrl;
-let db;
+var db = '';
 
 // middleware (supporting library)
 
