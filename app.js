@@ -8,8 +8,8 @@ let port = process.env.PORT || 9870;
 let mongo = require('mongodb')
 let MongoCLient = mongo.MongoClient
  // let mongoUrl = process.env.MongoUrl
- let mongoUrl = process.env.MongoUrl;
-var db = '';
+let mongoUrl = process.env.MongoLiveUrl;
+let db ;
 
 // middleware (supporting library)
 
@@ -63,7 +63,7 @@ app.get('/restaurants',(req,res) => {
     }else if(mealId){
       query = {'mealTypes.mealtype_id':mealId}
     }
-    db.collection('restaurants').find(query).toArray((err,result) => {
+    db.collection('restaurantsData').find(query).toArray((err,result) => {
       if(err) throw err;
       res.send(result)
     })
@@ -100,7 +100,7 @@ app.get('/filter/:mealId', (req,res) => {
     }else {
         query = {'mealTypes.mealtype_id':mealId}
     }
-    db.collection('restaurants').find(query).sort(sort).toArray((err,result) => {
+    db.collection('restaurantsData').find(query).sort(sort).toArray((err,result) => {
         if (err) throw err
         res.send(result)
     })
@@ -108,7 +108,7 @@ app.get('/filter/:mealId', (req,res) => {
 
 // app.get('/details/:id', (req,res) => {
 //  let id = mongo.ObjectId(req.params.id)
-//    db.collection('restaurants').find({_id: id}).toArray((err,result) => {
+//    db.collection('restaurantsData').find({_id: id}).toArray((err,result) => {
 //        if (err) throw err
 //        res.send(result)
 //    })
@@ -116,7 +116,7 @@ app.get('/filter/:mealId', (req,res) => {
 
 app.get('/details/:id', (req,res) => {
     let id = Number(req.params.id)
-     db.collection('restaurants').find({restaurant_id:id}).toArray((err,result) => {
+     db.collection('restaurantsData').find({restaurant_id:id}).toArray((err,result) => {
          if (err) throw err
          res.send(result)
      })
@@ -125,7 +125,7 @@ app.get('/details/:id', (req,res) => {
 
   app.get('/menu/:id', (req,res) => {
     let id = Number(req.params.id)
-     db.collection('restaurants').find({restaurant_id:id}).toArray((err,result) => {
+     db.collection('restaurantsData').find({restaurant_id:id}).toArray((err,result) => {
          if (err) throw err
          res.send(result)
      })
